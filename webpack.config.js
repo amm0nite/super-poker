@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { DefinePlugin } = require('webpack');
 
 module.exports = (env) => {
     let mode = 'development';
@@ -16,6 +17,9 @@ module.exports = (env) => {
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 title: 'Super Poker',
+            }),
+            new DefinePlugin({
+                'SERVER_URL': JSON.stringify(process.env.SERVER_URL)
             }),
         ],
         output: {

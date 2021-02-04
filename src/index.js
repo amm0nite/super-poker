@@ -1,13 +1,19 @@
 
 import './style.css';
 import _ from 'lodash';
+import WebSocketClient from './radio.js';
 
-function component() {
-    const element = document.createElement('div');
-    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-    element.classList.add('hello');
+function main() {
+    const client = new WebSocketClient();
+    client.connect();
 
-    return element;
+    document.addEventListener('connected', (e) => {
+        client.selectChannel('room123');
+    });
+
+    document.addEventListener('joined', (e) => {
+        console.log(e.type, e.variables);
+    });
 }
 
-document.body.appendChild(component());
+main();
