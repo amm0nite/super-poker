@@ -5,7 +5,12 @@ export default class WebSocketClient {
     }
 
     async connect() {
-        this.socket = new WebSocket(SERVER_URL);
+        const serverURL = SERVER_URL;
+        if (!serverURL) {
+            throw new Error('Server URL is not defined');
+        }
+
+        this.socket = new WebSocket(serverURL);
 
         this.socket.onopen = (event) => {
             console.log('connected to websocket server');
@@ -14,7 +19,7 @@ export default class WebSocketClient {
 
         this.socket.onmessage = (event) => {
             try {
-                let data = JSON.parse(event.data);
+                const data = JSON.parse(event.data);
                 this.handle(data);
             } catch(e) {
                 console.log(e);
@@ -22,7 +27,7 @@ export default class WebSocketClient {
         }
 
         this.socket.onclose = () => {
-            let wait = (Math.floor(Math.random() * 10) + 1) * 100;
+            const wait = (Math.floor(Math.random() * 10) + 1) * 100;
             setTimeout(() => this.connect(), wait);
         };
     }

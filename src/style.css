@@ -1,3 +1,24 @@
-.hello {
-    color: red;
+
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('./PressStart2P-Regular.ttf');
+    font-weight: 600;
+    font-style: normal;
+}
+
+html, body, pre, code, kbd, samp {
+    font-family: "PressStart2P";
+}
+
+.main-content {
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+.margin-top-big {
+    margin-top: 40px;
+}
+
+.margin-bottom-small {
+    margin-bottom: 10px;
 }
