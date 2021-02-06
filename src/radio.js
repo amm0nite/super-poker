@@ -38,7 +38,7 @@ export default class WebSocketClient {
 
         if (data.type === 'channel') {
             name = 'joined';
-            vars = data;
+            vars = { room: data.channel };
         }
         if (data.type === 'talk') {
             const message = data.message;

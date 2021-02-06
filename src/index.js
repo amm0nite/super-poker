@@ -6,20 +6,37 @@ import _ from 'lodash';
 import WebSocketClient from './radio.js';
 import Layout from "./layout";
 
-function main() {
-    const layout = new Layout();
-    layout.init();
+class Game {
+    constructor() {
+        this.layout = new Layout();
+        this.client = new WebSocketClient();
 
-    const client = new WebSocketClient();
-    client.connect();
+        this.connected = false;
+        this.room = null;
+    }
 
-    document.addEventListener('connected', (e) => {
-        client.selectChannel('room123');
-    });
+    main() {
+        this.layout.init();
+        this.layout.activate();
 
-    document.addEventListener('joined', (e) => {
-        console.log(e.type, e.variables);
-    });
+        this.client.connect();
+
+        document.addEventListener('connected', (e) => {
+            this.connected = true;
+        });
+
+        document.addEventListener('joined', (e) => {
+            this.room = e.variables.room;
+            console.log('room set', this.room);
+        });
+
+        document.addEventListener('enter', (e) => {
+            if (this.connected) {
+                this.client.selectChannel(e.variables.room);
+            }
+        });
+    }
 }
 
-main();
+const game = new Game();
+game.main();
