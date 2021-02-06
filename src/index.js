@@ -31,8 +31,6 @@ class Game {
         this.client.connect();
 
         document.addEventListener('connected', (e) => {
-            this.connected = true;
-
             const target = this.getTargetRoom();
             if (target) {
                 return this.trigger('enter', { room: target });
@@ -42,7 +40,6 @@ class Game {
         });
 
         document.addEventListener('disconnected', (e) => {
-            this.reset();
             this.layout.switch('connecting');
         });
 

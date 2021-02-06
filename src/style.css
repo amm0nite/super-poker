@@ -22,3 +22,7 @@ html, body, pre, code, kbd, samp {
 .margin-bottom-small {
     margin-bottom: 10px;
 }
+
+.hidden {
+    display: none;
+}
