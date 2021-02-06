@@ -1,144 +1,155 @@
 export default class Layout {
     constructor() {
-        this.elts = {};
+        this.views = [];
     }
 
     initBase() {
-        this.elts.title = document.createElement('h1');
-        this.elts.title.textContent = 'Super Poker';
-        this.elts.title.className = 'margin-top-big';
+        const title = document.createElement('h1');
+        title.textContent = 'Super Poker';
+        title.className = 'margin-top-big';
 
-        this.elts.mainDiv = document.createElement('div');
-        this.elts.mainDiv.className = 'main-content';
+        const mainDiv = document.createElement('div');
+        mainDiv.className = 'main-content';
 
-        this.elts.containerDiv = document.createElement('div');
-        this.elts.containerDiv.className = 'nes-container with-title';
+        const containerDiv = document.createElement('div');
+        containerDiv.className = 'nes-container with-title';
+        this.containerDiv = containerDiv;
 
-        this.elts.containerTitle = document.createElement('p');
-        this.elts.containerTitle.className = 'title';
-        this.elts.containerTitle.textContent = 'Hello';
+        const containerTitle = document.createElement('p');
+        containerTitle.className = 'title';
+        containerTitle.textContent = 'Hello';
+        this.containerTitle = containerTitle;
 
-        this.elts.mainDiv.append(this.elts.title);
-        this.elts.mainDiv.append(this.elts.containerDiv);
+        containerDiv.append(containerTitle);
 
-        document.body.append(this.elts.mainDiv);
+        mainDiv.append(title);
+        mainDiv.append(containerDiv);
+
+        document.body.append(mainDiv);
     }
 
-    initCreate() {
-        this.elts.createRoomDiv = document.createElement('div');
-        this.elts.createRoomDiv.className = 'nes-field view hidden';
+    createInput(id, labelText) {
+        const field = document.createElement('div');
+        field.className = 'nes-field';
 
-        const nameFieldId = 'name-field';
-        this.elts.roomNameLabel = document.createElement('label');
-        this.elts.roomNameLabel.htmlFor = nameFieldId;
-        this.elts.roomNameLabel.textContent = 'Room name';
-        this.elts.roomNameInput = document.createElement('input');
-        this.elts.roomNameInput.type = 'text';
-        this.elts.roomNameInput.id = nameFieldId;
-        this.elts.roomNameInput.className = 'nes-input margin-bottom-small';
-        this.elts.roomNameSubmit = document.createElement('button');
-        this.elts.roomNameSubmit.type = 'button';
-        this.elts.roomNameSubmit.className = 'nes-btn is-primary';
-        this.elts.roomNameSubmit.textContent = 'Create';
+        const label = document.createElement('label');
+        label.htmlFor = id;
+        label.textContent = labelText;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = id;
+        input.className = 'nes-input margin-bottom-small';
 
-        this.elts.createRoomDiv.append(this.elts.roomNameLabel);
-        this.elts.createRoomDiv.append(this.elts.roomNameInput);
-        this.elts.createRoomDiv.append(this.elts.roomNameSubmit);
+        field.append(label);
+        field.append(input);
 
-        this.elts.containerDiv.append(this.elts.containerTitle);
-        this.elts.containerDiv.append(this.elts.createRoomDiv);
-    }
-
-    initSpinner() {
-        this.elts.spinnerDiv = document.createElement('div');
-        this.elts.spinnerDiv.className = 'view hidden';
-
-        this.elts.spinnerText = document.createElement('p');
-        this.elts.spinnerText.textContent = 'Loading...';
-
-        this.elts.spinnerDiv.append(this.elts.spinnerText);
-
-        this.elts.containerDiv.append(this.elts.spinnerDiv);
+        return { field, input };
     }
 
     initOptions() {
-        this.elts.optionsDiv = document.createElement('div');
-        this.elts.optionsDiv.className = 'nes-field view hidden';
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'nes-field view hidden';
+        this.optionsDiv = optionsDiv;
+        this.views.push(optionsDiv);
 
-        const nameFieldId = 'name-field';
-        this.elts.playerNameLabel = document.createElement('label');
-        this.elts.playerNameLabel.htmlFor = nameFieldId;
-        this.elts.playerNameLabel.textContent = 'Options';
-        this.elts.playerNameInput = document.createElement('input');
-        this.elts.playerNameInput.type = 'text';
-        this.elts.playerNameInput.id = nameFieldId;
-        this.elts.playerNameInput.className = 'nes-input margin-bottom-small';
-        this.elts.playerNameSubmit = document.createElement('button');
-        this.elts.playerNameSubmit.type = 'button';
-        this.elts.playerNameSubmit.className = 'nes-btn is-primary';
-        this.elts.playerNameSubmit.textContent = 'Continue';
+        const playerInput = this.createInput('your-name', 'Your name');
+        this.playerNameInput = playerInput.input;
 
-        this.elts.optionsDiv.append(this.elts.playerNameLabel);
-        this.elts.optionsDiv.append(this.elts.playerNameInput);
+        const roomInput = this.createInput('room-name', 'Room name');
+        this.roomNameInput = roomInput.input;
 
-        this.elts.containerDiv.append(this.elts.optionsDiv);
+        const optionsSubmit = document.createElement('button');
+        optionsSubmit.type = 'button';
+        optionsSubmit.className = 'nes-btn is-primary';
+        optionsSubmit.textContent = 'Create';
+        this.optionsSubmit = optionsSubmit;
+
+        optionsDiv.append(playerInput.field);
+        optionsDiv.append(roomInput.field);
+        optionsDiv.append(optionsSubmit);
+
+        this.containerDiv.append(optionsDiv);
+    }
+
+    initSpinner() {
+        const spinnerDiv = document.createElement('div');
+        spinnerDiv.className = 'view hidden';
+        this.spinnerDiv = spinnerDiv;
+        this.views.push(spinnerDiv);
+
+        const spinnerText = document.createElement('p');
+        spinnerText.textContent = 'Loading...';
+
+        spinnerDiv.append(spinnerText);
+
+        this.containerDiv.append(spinnerDiv);
     }
 
     initIngame() {
-        this.elts.ingameDiv = document.createElement('div');
-        this.elts.ingameDiv.className = 'view hidden';
+        const ingameDiv = document.createElement('div');
+        ingameDiv.className = 'view hidden';
+        this.ingameDiv = ingameDiv;
+        this.views.push(ingameDiv);
 
-        this.elts.containerDiv.append(this.elts.ingameDiv);
+        this.containerDiv.append(ingameDiv);
     }
 
     init() {
         this.initBase();
-        this.initCreate();
+        this.initOptions();
         this.initSpinner();
         this.initIngame();
     }
 
     activate() {
-        this.elts.roomNameSubmit.addEventListener('click', (e) => {
-            if (this.elts.roomNameInput.value != '') {
+        this.optionsSubmit.addEventListener('click', (e) => {
+            if (this.roomNameInput.value != '' && this.playerNameInput.value != '') {
                 const event = new Event('enter');
-                event.variables = { room: this.elts.roomNameInput.value };
+                event.variables = {
+                    room: this.roomNameInput.value,
+                    player: this.playerNameInput.value,
+                };
                 document.dispatchEvent(event);
             }
         });
     }
 
     hideViews() {
-        for (let elt of Object.values(this.elts)) {
-            if (elt.classList.contains('view') && !elt.classList.contains('hidden')) {
+        for (let elt of this.views) {
+            if (!elt.classList.contains('hidden')) {
                 elt.classList.add('hidden');
             }
         }
     }
 
-    switch(view, data) {
-        console.log('switching to', view, data);
+    switch(view, options) {
+        console.log('switching to', view);
 
         let title = 'view:' + view;
         this.hideViews();
 
         if (view === 'connecting') {
             title = 'Connecting';
-            this.elts.spinnerDiv.classList.remove('hidden');
+            this.spinnerDiv.classList.remove('hidden');
         }
         if (view === 'joining') {
             title = 'Joining';
-            this.elts.spinnerDiv.classList.remove('hidden');
+            this.spinnerDiv.classList.remove('hidden');
         }
-        if (view === 'create') {
-            title = 'Create Room';
-            this.elts.createRoomDiv.classList.remove('hidden');
+        if (view === 'options') {
+            title = 'Options';
+            this.roomNameInput.value = options.room;
+            this.playerNameInput.value = options.player;
+            if (options.room) {
+                this.optionsSubmit.textContent = 'Continue';
+            }
+            this.optionsDiv.classList.remove('hidden');
         }
         if (view === 'ingame') {
-            title = data.room;
-            this.elts.ingameDiv.classList.remove('hidden');
+            title = options.player + '@' + options.room;
+            this.ingameDiv.classList.remove('hidden');
         }
 
-        this.elts.containerTitle.textContent = title;
+        this.containerTitle.textContent = title;
     }
 }

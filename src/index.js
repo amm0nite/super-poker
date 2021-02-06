@@ -6,15 +6,20 @@ import _ from 'lodash';
 import WebSocketClient from './radio.js';
 import Layout from "./layout";
 
+class Options {
+    constructor() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        this.room = urlParams.get('room');
+        this.player = null;
+    }
+}
+
 class Game {
     constructor() {
-        this.layout = new Layout();
+        this.options = new Options();
+        this.layout = new Layout(this.options);
         this.client = new WebSocketClient();
-    }
-
-    getTargetRoom() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('room');
     }
 
     trigger(name, vars) {
@@ -31,26 +36,24 @@ class Game {
         this.client.connect();
 
         document.addEventListener('connected', (e) => {
-            const target = this.getTargetRoom();
-            if (target) {
-                return this.trigger('enter', { room: target });
-            }
-
-            this.layout.switch('create');
+            this.layout.switch('options', this.options);
         });
 
         document.addEventListener('disconnected', (e) => {
             this.layout.switch('connecting');
         });
 
-        document.addEventListener('joined', (e) => {
-            const room = e.variables.room;
-            this.layout.switch('ingame', { room });
+        document.addEventListener('enter', (e) => {
+            this.options.room = e.variables.room;
+            this.options.player = e.variables.player;
+
+            this.client.selectChannel(e.variables.room);
+
+            this.layout.switch('joining');
         });
 
-        document.addEventListener('enter', (e) => {
-            this.client.selectChannel(e.variables.room);
-            this.layout.switch('joining');
+        document.addEventListener('joined', (e) => {
+            this.layout.switch('ingame', this.options);
         });
     }
 }
