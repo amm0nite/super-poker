@@ -56,4 +56,8 @@ export default class Layout {
             }
         });
     }
+
+    switch(view, data) {
+        console.log('switching to', view, data);
+    }
 }

@@ -27,6 +27,7 @@ export default class WebSocketClient {
         }
 
         this.socket.onclose = () => {
+            document.dispatchEvent(new Event('disconnected'));
             const wait = (Math.floor(Math.random() * 10) + 1) * 100;
             setTimeout(() => this.connect(), wait);
         };

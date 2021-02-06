@@ -11,29 +11,45 @@ class Game {
         this.layout = new Layout();
         this.client = new WebSocketClient();
 
-        this.connected = false;
-        this.room = null;
+        const urlParams = new URLSearchParams(window.location.search);
+        const room = urlParams.get('room');
+        this.target = room;
     }
 
     main() {
         this.layout.init();
         this.layout.activate();
 
+        this.layout.switch('connecting');
+
         this.client.connect();
 
         document.addEventListener('connected', (e) => {
-            this.connected = true;
+            this.connected = true;console.log(this.target);
+
+            if (this.target) {
+                const event = new Event('enter');
+                event.variables = { room: this.target };
+                document.dispatchEvent(event);
+                return;
+            }
+
+            this.layout.switch('create');
+        });
+
+        document.addEventListener('disconnected', (e) => {
+            this.reset();
+            this.layout.switch('connecting');
         });
 
         document.addEventListener('joined', (e) => {
-            this.room = e.variables.room;
-            console.log('room set', this.room);
+            const room = e.variables.room;
+            this.layout.switch('ingame', { room });
         });
 
         document.addEventListener('enter', (e) => {
-            if (this.connected) {
-                this.client.selectChannel(e.variables.room);
-            }
+            this.client.selectChannel(e.variables.room);
+            this.layout.switch('joining');
         });
     }
 }
