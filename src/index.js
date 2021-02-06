@@ -10,10 +10,17 @@ class Game {
     constructor() {
         this.layout = new Layout();
         this.client = new WebSocketClient();
+    }
 
+    getTargetRoom() {
         const urlParams = new URLSearchParams(window.location.search);
-        const room = urlParams.get('room');
-        this.target = room;
+        return urlParams.get('room');
+    }
+
+    trigger(name, vars) {
+        const event = new Event(name);
+        event.variables = vars;
+        document.dispatchEvent(event);
     }
 
     main() {
@@ -21,17 +28,14 @@ class Game {
         this.layout.activate();
 
         this.layout.switch('connecting');
-
         this.client.connect();
 
         document.addEventListener('connected', (e) => {
-            this.connected = true;console.log(this.target);
+            this.connected = true;
 
-            if (this.target) {
-                const event = new Event('enter');
-                event.variables = { room: this.target };
-                document.dispatchEvent(event);
-                return;
+            const target = this.getTargetRoom();
+            if (target) {
+                return this.trigger('enter', { room: target });
             }
 
             this.layout.switch('create');
