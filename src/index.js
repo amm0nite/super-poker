@@ -18,7 +18,7 @@ class Options {
 class Game {
     constructor() {
         this.options = new Options();
-        this.layout = new Layout(this.options);
+        this.layout = new Layout();
         this.client = new WebSocketClient();
     }
 
