@@ -145,6 +145,7 @@ export default class Layout {
                 this.optionsSubmit.textContent = 'Continue';
             }
             this.optionsForm.classList.remove('hidden');
+            this.playerNameInput.focus();
         }
         if (view === 'ingame') {
             title = options.player + '@' + options.room;
