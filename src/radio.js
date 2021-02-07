@@ -20,6 +20,7 @@ export default class WebSocketClient {
         this.socket.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
+                console.log('rx', data);
                 this.handle(data);
             } catch(e) {
                 console.log(e);
@@ -56,11 +57,20 @@ export default class WebSocketClient {
         document.dispatchEvent(event);
     }
 
-    selectChannel(channel) {
-        this.socket.send(JSON.stringify({ type: 'channel', channel }));
+    send(data) {
+        this.socket.send(JSON.stringify(data));
+        console.log('tx', data);
     }
 
-    send(message) {
-        this.socket.send(JSON.stringify({ type: 'talk', message }));
+    selectChannel(channel) {
+        this.send({ type: 'channel', channel });
+    }
+
+    update(options) {
+        const message = {
+            player: options.player,
+            vote: options.vote,
+        };
+        this.send({ type: 'talk', message });
     }
 }

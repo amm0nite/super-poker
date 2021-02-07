@@ -91,6 +91,41 @@ export default class Layout {
         this.ingameDiv = ingameDiv;
         this.views.push(ingameDiv);
 
+        // CHOICES
+        const choicesDiv = document.createElement('div');
+        choicesDiv.className = 'flex margin-bottom-small';
+
+        this.choiceButtons = [];
+        let choices = [1,3,5,8,13,21];
+        for (let i=0; i<choices.length; i++) {
+            const choiceButton = document.createElement('button');
+            choiceButton.className = 'nes-btn block';
+            if (i > 0) {
+                choiceButton.classList.add('magin-left-small');
+            }
+            choiceButton.textContent = choices[i];
+            choicesDiv.append(choiceButton);
+            this.choiceButtons.push(choiceButton);
+        }
+
+        // VOTES
+        const votesDiv = document.createElement('div');
+        votesDiv.className = 'nes-table-responsive';
+
+        const votesTable = document.createElement('table');
+        votesTable.className = 'nes-table is-bordered is-centered';
+        votesTable.append(document.createElement('tbody'));
+        const votesTableBody = document.createElement('tbody');
+        votesTable.append(votesTableBody);
+        this.votesTableBody = votesTableBody;
+
+        votesDiv.append(votesTable);
+
+        //<progress class="nes-progress is-primary" value="80" max="100"></progress>
+
+        ingameDiv.append(choicesDiv);
+        ingameDiv.append(votesDiv);
+
         this.containerDiv.append(ingameDiv);
     }
 
@@ -113,6 +148,16 @@ export default class Layout {
             }
             e.preventDefault();
         });
+
+        for (let choiceButton of this.choiceButtons) {
+            choiceButton.addEventListener('click', (e) => {
+                const event = new Event('choice');
+                event.variables = {
+                    vote: choiceButton.textContent
+                }
+                document.dispatchEvent(event);
+            });
+        }
     }
 
     hideViews() {
@@ -150,6 +195,29 @@ export default class Layout {
         if (view === 'ingame') {
             title = options.player + '@' + options.room;
             this.ingameDiv.classList.remove('hidden');
+            for (let choiceButton of this.choiceButtons) {
+                const value = choiceButton.textContent;
+                if (choiceButton.classList.contains('is-success')) {
+                    choiceButton.classList.remove('is-success');
+                }
+                if (options.vote == value) {
+                    choiceButton.classList.add('is-success');
+                }
+            }
+            this.votesTableBody.textContent = '';
+            for (let vote of options.getVotes()) {
+                let value = '?';
+                if (vote.value) {
+                    value = vote.value;
+                }
+                const row = document.createElement('tr');
+                const nameCell = document.createElement('td');
+                nameCell.textContent = vote.name;
+                const valueCell = document.createElement('td');
+                valueCell.textContent = value;
+                row.append(nameCell, valueCell);
+                this.votesTableBody.append(row);
+            }
         }
 
         this.containerTitle.textContent = title;
