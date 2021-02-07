@@ -186,48 +186,57 @@ export default class Layout {
         }
         if (view === 'options') {
             title = 'Options';
-            this.roomNameInput.value = options.room;
-            this.playerNameInput.value = options.player;
-            if (options.room) {
-                this.optionsSubmit.textContent = 'Continue';
-            }
+            this.refreshOptionsView(options);
             this.optionsForm.classList.remove('hidden');
-            this.playerNameInput.focus();
         }
         if (view === 'ingame') {
             title = options.player + '@' + options.room;
+            this.refreshIngameView(options);
             this.ingameDiv.classList.remove('hidden');
-            for (let choiceButton of this.choiceButtons) {
-                const value = choiceButton.textContent;
-                if (choiceButton.classList.contains('is-success')) {
-                    choiceButton.classList.remove('is-success');
-                }
-                if (options.vote == value) {
-                    choiceButton.classList.add('is-success');
-                }
-            }
-            this.votesTableBody.textContent = '';
-
-            let hasVoted = 0;
-            const votes = options.getVotes();
-            for (let vote of votes) {
-                let value = '?';
-                if (vote.value) {
-                    value = vote.value;
-                    hasVoted++;
-                }
-                const row = document.createElement('tr');
-                const nameCell = document.createElement('td');
-                nameCell.textContent = vote.name;
-                const valueCell = document.createElement('td');
-                valueCell.textContent = value;
-                row.append(nameCell, valueCell);
-                this.votesTableBody.append(row);
-            }
-            this.voteProgress.value = hasVoted;
-            this.voteProgress.max = votes.length;
         }
 
         this.containerTitle.textContent = title;
+    }
+
+    refreshOptionsView(options) {
+        this.roomNameInput.value = options.room;
+        this.playerNameInput.value = options.player;
+        if (options.room) {
+            this.optionsSubmit.textContent = 'Continue';
+        }
+        this.playerNameInput.focus();
+    }
+
+    refreshIngameView(options) {
+        for (let choiceButton of this.choiceButtons) {
+            const value = choiceButton.textContent;
+            if (choiceButton.classList.contains('is-success')) {
+                choiceButton.classList.remove('is-success');
+            }
+            if (options.vote == value) {
+                choiceButton.classList.add('is-success');
+            }
+        }
+
+        this.votesTableBody.textContent = '';
+
+        let hasVoted = 0;
+        const votes = options.getVotes();
+        for (let vote of votes) {
+            let value = '?';
+            if (vote.value) {
+                value = vote.value;
+                hasVoted++;
+            }
+            const row = document.createElement('tr');
+            const nameCell = document.createElement('td');
+            nameCell.textContent = vote.name;
+            const valueCell = document.createElement('td');
+            valueCell.textContent = value;
+            row.append(nameCell, valueCell);
+            this.votesTableBody.append(row);
+        }
+        this.voteProgress.value = hasVoted;
+        this.voteProgress.max = votes.length;
     }
 }
