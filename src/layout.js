@@ -47,10 +47,10 @@ export default class Layout {
     }
 
     initOptions() {
-        const optionsDiv = document.createElement('div');
-        optionsDiv.className = 'nes-field view hidden';
-        this.optionsDiv = optionsDiv;
-        this.views.push(optionsDiv);
+        const optionsForm = document.createElement('form');
+        optionsForm.className = 'nes-field view hidden';
+        this.optionsForm = optionsForm;
+        this.views.push(optionsForm);
 
         const playerInput = this.createInput('your-name', 'Your name');
         this.playerNameInput = playerInput.input;
@@ -59,16 +59,16 @@ export default class Layout {
         this.roomNameInput = roomInput.input;
 
         const optionsSubmit = document.createElement('button');
-        optionsSubmit.type = 'button';
+        optionsSubmit.type = 'submit';
         optionsSubmit.className = 'nes-btn is-primary';
         optionsSubmit.textContent = 'Create';
         this.optionsSubmit = optionsSubmit;
 
-        optionsDiv.append(playerInput.field);
-        optionsDiv.append(roomInput.field);
-        optionsDiv.append(optionsSubmit);
+        optionsForm.append(playerInput.field);
+        optionsForm.append(roomInput.field);
+        optionsForm.append(optionsSubmit);
 
-        this.containerDiv.append(optionsDiv);
+        this.containerDiv.append(optionsForm);
     }
 
     initSpinner() {
@@ -102,7 +102,7 @@ export default class Layout {
     }
 
     activate() {
-        this.optionsSubmit.addEventListener('click', (e) => {
+        this.optionsForm.addEventListener('submit', (e) => {
             if (this.roomNameInput.value != '' && this.playerNameInput.value != '') {
                 const event = new Event('enter');
                 event.variables = {
@@ -111,6 +111,7 @@ export default class Layout {
                 };
                 document.dispatchEvent(event);
             }
+            e.preventDefault();
         });
     }
 
@@ -143,7 +144,7 @@ export default class Layout {
             if (options.room) {
                 this.optionsSubmit.textContent = 'Continue';
             }
-            this.optionsDiv.classList.remove('hidden');
+            this.optionsForm.classList.remove('hidden');
         }
         if (view === 'ingame') {
             title = options.player + '@' + options.room;
