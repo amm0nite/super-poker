@@ -20,7 +20,6 @@ export default class WebSocketClient {
         this.socket.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
-                console.log('rx', data);
                 this.handle(data);
             } catch(e) {
                 console.log(e);
@@ -35,8 +34,14 @@ export default class WebSocketClient {
     }
 
     handle(data) {
+        if (!data.type) {
+            return;
+        }
+
         let name = null;
         let vars = {};
+
+        console.log('rx', data);
 
         if (data.type === 'channel') {
             name = 'joined';
@@ -45,7 +50,11 @@ export default class WebSocketClient {
         if (data.type === 'talk') {
             const message = data.message;
             name = message.type;
-            vars = message;
+            vars = {
+                id: data.author,
+                name: message.player,
+                value: message.vote,
+            };
         }
 
         if (!name) {
@@ -66,11 +75,13 @@ export default class WebSocketClient {
         this.send({ type: 'channel', channel });
     }
 
-    update(options) {
-        const message = {
-            player: options.player,
-            vote: options.vote,
-        };
+    vote(player, vote) {
+        const message = { type: 'vote', player, vote };
+        this.send({ type: 'talk', message });
+    }
+
+    hello(player) {
+        const message = { type: 'hello', player };
         this.send({ type: 'talk', message });
     }
 }

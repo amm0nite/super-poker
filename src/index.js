@@ -2,7 +2,6 @@
 import "nes.css/css/nes.min.css";
 import './style.css';
 
-import _ from 'lodash';
 import WebSocketClient from './radio.js';
 import Layout from "./layout";
 
@@ -13,12 +12,14 @@ class Options {
         this.room = urlParams.get('room');
         this.player = null;
         this.vote = null;
-        this.players = [];
+        this.votes = {};
     }
 
     getVotes() {
-        let votes = [];
-        votes.push({ name: this.player, value: this.vote });
+        const votes = [{ name: this.player, value: this.vote }];
+        for (let vote of Object.values(this.votes)) {
+            votes.push(vote);
+        }
 
         return votes;
     }
@@ -63,13 +64,29 @@ class Game {
 
         document.addEventListener('joined', (e) => {
             this.layout.switch('ingame', this.options);
-            this.client.update(this.options);
+            this.client.hello(this.options.player);
         });
 
         document.addEventListener('choice', (e) => {
             this.options.vote = e.variables.vote;
-            this.options.players
-            this.client.update(this.options);
+            this.client.vote(this.options.player, this.options.vote);
+            this.layout.switch('ingame', this.options);
+        });
+
+        document.addEventListener('hello', (e) => {
+            this.options.votes[e.variables.id] = {
+                name: e.variables.name,
+                value: null,
+            };
+            this.client.vote(this.options.player, this.options.vote);
+            this.layout.switch('ingame', this.options);
+        });
+
+        document.addEventListener('vote', (e) => {
+            this.options.votes[e.variables.id] = {
+                name: e.variables.name,
+                value: e.variables.value,
+            };
             this.layout.switch('ingame', this.options);
         });
     }

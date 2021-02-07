@@ -100,9 +100,6 @@ export default class Layout {
         for (let i=0; i<choices.length; i++) {
             const choiceButton = document.createElement('button');
             choiceButton.className = 'nes-btn block';
-            if (i > 0) {
-                choiceButton.classList.add('magin-left-small');
-            }
             choiceButton.textContent = choices[i];
             choicesDiv.append(choiceButton);
             this.choiceButtons.push(choiceButton);
