@@ -85,6 +85,25 @@ export default class Layout {
         this.containerDiv.append(spinnerDiv);
     }
 
+    createVoterDiv(name, value) {
+        const voterDiv = document.createElement('div');
+
+        const voterCard = document.createElement('button');
+        voterCard.className = 'nes-btn card';
+        if (value) {
+            voterCard.classList.add('is-primary');
+        }
+
+        const voterName = document.createElement('p');
+        voterName.className = 'player-name';
+        voterName.textContent = name;
+
+        voterDiv.append(voterCard);
+        voterDiv.append(voterName);
+
+        return voterDiv;
+    }
+
     initIngame() {
         const ingameDiv = document.createElement('div');
         ingameDiv.className = 'view hidden';
@@ -93,33 +112,24 @@ export default class Layout {
 
         // CHOICES
         const choicesDiv = document.createElement('div');
-        choicesDiv.className = 'flex margin-bottom-small';
+        choicesDiv.className = 'flex';
 
         this.choiceButtons = [];
         let choices = [1,2,3,5,8,13,21,'?'];
         for (let i=0; i<choices.length; i++) {
             const choiceButton = document.createElement('button');
-            choiceButton.className = 'nes-btn block';
+            choiceButton.className = 'nes-btn card';
             choiceButton.textContent = choices[i];
             choicesDiv.append(choiceButton);
             this.choiceButtons.push(choiceButton);
         }
 
-        // VOTES
         const votesDiv = document.createElement('div');
-        votesDiv.className = 'nes-table-responsive';
-
-        const votesTable = document.createElement('table');
-        votesTable.className = 'nes-table is-bordered is-centered';
-        votesTable.append(document.createElement('tbody'));
-        const votesTableBody = document.createElement('tbody');
-        votesTable.append(votesTableBody);
-        this.votesTableBody = votesTableBody;
-
-        votesDiv.append(votesTable);
+        votesDiv.className = 'flex margin-top-big';
+        this.votesDiv = votesDiv;
 
         const voteProgress = document.createElement('progress');
-        voteProgress.className = 'nes-progress is-primary margin-top-big';
+        voteProgress.className = 'nes-progress is-pattern margin-top-big';
         voteProgress.value = 0;
         voteProgress.max = 0;
         this.voteProgress = voteProgress;
@@ -218,23 +228,16 @@ export default class Layout {
             }
         }
 
-        this.votesTableBody.textContent = '';
+        this.votesDiv.textContent = '';
 
         let hasVoted = 0;
         const votes = options.getVotes();
         for (let vote of votes) {
-            let value = '?';
             if (vote.value) {
-                value = vote.value;
                 hasVoted++;
             }
-            const row = document.createElement('tr');
-            const nameCell = document.createElement('td');
-            nameCell.textContent = vote.name;
-            const valueCell = document.createElement('td');
-            valueCell.textContent = value;
-            row.append(nameCell, valueCell);
-            this.votesTableBody.append(row);
+            const card = this.createVoterDiv(vote.name, vote.value);
+            this.votesDiv.append(card);
         }
         this.voteProgress.value = hasVoted;
         this.voteProgress.max = votes.length;

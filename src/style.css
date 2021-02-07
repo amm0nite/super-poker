@@ -30,8 +30,19 @@ html, body, pre, code, kbd, samp {
 .flex {
     display: flex;
     justify-content: space-evenly;
+    flex-flow: row wrap;
 }
 
-.block {
+.card {
     display: block;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+}
+
+.player-name {
+    text-align: center;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
