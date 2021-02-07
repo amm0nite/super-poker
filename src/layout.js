@@ -96,7 +96,7 @@ export default class Layout {
         choicesDiv.className = 'flex margin-bottom-small';
 
         this.choiceButtons = [];
-        let choices = [1,3,5,8,13,21];
+        let choices = [1,2,3,5,8,13,21,'?'];
         for (let i=0; i<choices.length; i++) {
             const choiceButton = document.createElement('button');
             choiceButton.className = 'nes-btn block';
@@ -118,10 +118,15 @@ export default class Layout {
 
         votesDiv.append(votesTable);
 
-        //<progress class="nes-progress is-primary" value="80" max="100"></progress>
+        const voteProgress = document.createElement('progress');
+        voteProgress.className = 'nes-progress is-primary margin-top-big';
+        voteProgress.value = 0;
+        voteProgress.max = 0;
+        this.voteProgress = voteProgress;
 
         ingameDiv.append(choicesDiv);
         ingameDiv.append(votesDiv);
+        ingameDiv.append(voteProgress);
 
         this.containerDiv.append(ingameDiv);
     }
@@ -202,10 +207,14 @@ export default class Layout {
                 }
             }
             this.votesTableBody.textContent = '';
-            for (let vote of options.getVotes()) {
+
+            let hasVoted = 0;
+            const votes = options.getVotes();
+            for (let vote of votes) {
                 let value = '?';
                 if (vote.value) {
                     value = vote.value;
+                    hasVoted++;
                 }
                 const row = document.createElement('tr');
                 const nameCell = document.createElement('td');
@@ -215,6 +224,8 @@ export default class Layout {
                 row.append(nameCell, valueCell);
                 this.votesTableBody.append(row);
             }
+            this.voteProgress.value = hasVoted;
+            this.voteProgress.max = votes.length;
         }
 
         this.containerTitle.textContent = title;
