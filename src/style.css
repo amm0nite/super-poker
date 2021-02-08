@@ -46,3 +46,7 @@ html, body, pre, code, kbd, samp {
     margin-left: 5px;
     margin-right: 5px;
 }
+
+.text-align-center {
+    text-align: center;
+}

@@ -50,11 +50,16 @@ export default class WebSocketClient {
         if (data.type === 'talk') {
             const message = data.message;
             name = message.type;
-            vars = {
-                id: data.author,
-                name: message.player,
-                value: message.vote,
-            };
+            if (message.type === 'vote') {
+                vars = {
+                    id: data.author,
+                    name: message.player,
+                    value: message.vote,
+                };
+            }
+            if (message.type === 'reveal') {
+                vars = { show: message.show };
+            }
         }
 
         if (!name) {
@@ -82,6 +87,11 @@ export default class WebSocketClient {
 
     hello(player) {
         const message = { type: 'hello', player };
+        this.send({ type: 'talk', message });
+    }
+
+    reveal(show) {
+        const message = { type: 'reveal', show };
         this.send({ type: 'talk', message });
     }
 }

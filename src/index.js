@@ -13,6 +13,7 @@ class Options {
         this.player = null;
         this.vote = null;
         this.votes = {};
+        this.show = false;
     }
 
     getVotes() {
@@ -87,6 +88,17 @@ class Game {
                 name: e.variables.name,
                 value: e.variables.value,
             };
+            this.layout.switch('ingame', this.options);
+        });
+
+        document.addEventListener('toggle', (e) => {
+            this.options.show = !this.options.show;
+            this.client.reveal(this.options.show);
+            this.layout.switch('ingame', this.options);
+        });
+
+        document.addEventListener('reveal', (e) => {
+            this.options.show = e.variables.show;
             this.layout.switch('ingame', this.options);
         });
     }

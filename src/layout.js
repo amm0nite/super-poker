@@ -85,13 +85,17 @@ export default class Layout {
         this.containerDiv.append(spinnerDiv);
     }
 
-    createVoterDiv(name, value) {
+    createVoterDiv(name, value, show) {
         const voterDiv = document.createElement('div');
 
         const voterCard = document.createElement('button');
         voterCard.className = 'nes-btn card';
-        if (value) {
+
+        if (value && !show) {
             voterCard.classList.add('is-primary');
+        }
+        if (value && show) {
+            voterCard.textContent = value;
         }
 
         const voterName = document.createElement('p');
@@ -110,7 +114,6 @@ export default class Layout {
         this.ingameDiv = ingameDiv;
         this.views.push(ingameDiv);
 
-        // CHOICES
         const choicesDiv = document.createElement('div');
         choicesDiv.className = 'flex';
 
@@ -134,8 +137,16 @@ export default class Layout {
         voteProgress.max = 0;
         this.voteProgress = voteProgress;
 
+        const actionDiv = document.createElement('p');
+        actionDiv.className = 'text-align-center margin-top-big';
+        const actionButton = document.createElement('button');
+        actionButton.className = 'nes-btn';
+        this.actionButton = actionButton;
+        actionDiv.append(actionButton);
+
         ingameDiv.append(choicesDiv);
         ingameDiv.append(votesDiv);
+        ingameDiv.append(actionDiv);
         ingameDiv.append(voteProgress);
 
         this.containerDiv.append(ingameDiv);
@@ -170,6 +181,11 @@ export default class Layout {
                 document.dispatchEvent(event);
             });
         }
+
+        this.actionButton.addEventListener('click', (e) => {
+            const event = new Event('toggle');
+            document.dispatchEvent(event);
+        });
     }
 
     hideViews() {
@@ -236,10 +252,18 @@ export default class Layout {
             if (vote.value) {
                 hasVoted++;
             }
-            const card = this.createVoterDiv(vote.name, vote.value);
+            const card = this.createVoterDiv(vote.name, vote.value, options.show);
             this.votesDiv.append(card);
         }
         this.voteProgress.value = hasVoted;
         this.voteProgress.max = votes.length;
+
+        if (!options.show) {
+            this.actionButton.classList.add('is-success');
+            this.actionButton.textContent = 'Show cards';
+        } else {
+            this.actionButton.classList.remove('is-success');
+            this.actionButton.textContent = 'Hide cards';
+        }
     }
 }
