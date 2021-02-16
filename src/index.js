@@ -3,7 +3,7 @@ import "nes.css/css/nes.min.css";
 import './style.css';
 
 import WebSocketClient from './radio.js';
-import Layout from "./layout";
+import Layout from './layout.js';
 
 class Options {
     constructor() {
@@ -40,7 +40,7 @@ class Game {
     }
 
     main() {
-        this.layout.init();
+        document.body.append(this.layout.init());
         this.layout.activate();
 
         this.layout.switch('connecting');
