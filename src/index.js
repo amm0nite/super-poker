@@ -93,7 +93,7 @@ class Game {
 
         document.addEventListener('toggle', (e) => {
             this.options.show = !this.options.show;
-            this.client.reveal(this.options.show);
+            this.client.reveal(this.options.player, this.options.show);
             this.layout.switch('ingame', this.options);
         });
 
