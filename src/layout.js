@@ -1,6 +1,7 @@
 import Spinner from './views/spinner.js';
 import Options from './views/options.js';
 import Ingame from './views/ingame.js';
+import pack from '../package.json';
 
 export default class Layout {
     constructor() {
@@ -34,8 +35,11 @@ export default class Layout {
             containerDiv.append(view.init());
         }
 
+        const footerDiv = this.createFooter();
+
         mainDiv.append(title);
         mainDiv.append(containerDiv);
+        mainDiv.append(footerDiv);
 
         return mainDiv;
     }
@@ -67,5 +71,24 @@ export default class Layout {
         let title = selectedView.getTitle(options);
 
         this.containerTitle.textContent = title;
+    }
+
+    createFooter() {
+        const footerDiv = document.createElement('p');
+        footerDiv.className = 'text-align-center margin-top-big';
+
+        const githubLink = document.createElement('a');
+        githubLink.href = pack.homepage;
+        githubLink.textContent = 'github';
+        footerDiv.append(githubLink);
+
+        footerDiv.append(' - ');
+
+        const twitterLink = document.createElement('a');
+        twitterLink.href = 'https://twitter.com/amm0nite';
+        twitterLink.textContent = '@amm0nite';
+        footerDiv.append(twitterLink);
+
+        return footerDiv;
     }
 }
