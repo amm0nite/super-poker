@@ -47,17 +47,17 @@ export default class Ingame {
         return ingameDiv;
     }
 
-    createVoterDiv(name, value, show) {
+    createVoterDiv(name, vote, show) {
         const voterDiv = document.createElement('div');
 
         const voterCard = document.createElement('button');
         voterCard.className = 'nes-btn card';
 
-        if (value && !show) {
+        if (vote && !show) {
             voterCard.classList.add('is-primary');
         }
-        if (value && show) {
-            voterCard.textContent = value;
+        if (vote && show) {
+            voterCard.textContent = vote;
         }
 
         const voterName = document.createElement('p');
@@ -106,7 +106,7 @@ export default class Ingame {
             if (vote.value) {
                 hasVoted++;
             }
-            const card = this.createVoterDiv(vote.name, vote.value, options.show);
+            const card = this.createVoterDiv(vote.name, vote.vote, vote.show);
             this.votesDiv.append(card);
         }
         this.voteProgress.value = hasVoted;

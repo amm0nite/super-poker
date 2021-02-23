@@ -55,7 +55,7 @@ export default class WebSocketClient {
                 name: message.player,
             };
             if (message.type === 'vote') {
-                vars.value = message.vote;
+                vars.vote = message.vote;
             }
             if (message.type === 'reveal') {
                 vars.show = message.show;

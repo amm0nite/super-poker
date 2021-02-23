@@ -12,17 +12,54 @@ class Options {
         this.room = urlParams.get('room');
         this.player = null;
         this.vote = null;
-        this.votes = {};
         this.show = false;
+
+        this.others = [];
+    }
+
+    playerVote(vote) {
+        this.vote = vote;
+        if (this.show) {
+            this.show = false;
+        }
+    }
+
+    otherHello(vars) {
+        let other = this.others.find((o) => o.id === vars.id);
+        if (!other) {
+            other = {
+                id: vars.id,
+                name: vars.name,
+                vote: null,
+                show: false,
+            };
+            this.others.push(other);
+        }
+        return other;
+    }
+
+    otherVote(vars) {
+        const other = this.otherHello(vars);
+        other.vote = vars.vote;
+        if (other.show) {
+            other.show = false;
+        }
     }
 
     getVotes() {
-        const votes = [{ name: this.player, value: this.vote }];
-        for (let vote of Object.values(this.votes)) {
-            votes.push(vote);
+        const votes = [{ name: this.player, vote: this.vote, show: this.show }];
+        for (let other of this.others) {
+            votes.push(other);
         }
 
         return votes;
+    }
+
+    toggleShow(show) {
+        this.show = show;
+        for (let other of this.others) {
+            other.show = show;
+        }
     }
 }
 
@@ -69,36 +106,30 @@ class Game {
         });
 
         document.addEventListener('choice', (e) => {
-            this.options.vote = e.variables.vote;
+            this.options.playerVote(e.variables.vote);
             this.client.vote(this.options.player, this.options.vote);
             this.layout.switch('ingame', this.options);
         });
 
         document.addEventListener('hello', (e) => {
-            this.options.votes[e.variables.id] = {
-                name: e.variables.name,
-                value: null,
-            };
+            this.options.otherHello(e.variables);
             this.client.vote(this.options.player, this.options.vote);
             this.layout.switch('ingame', this.options);
         });
 
         document.addEventListener('vote', (e) => {
-            this.options.votes[e.variables.id] = {
-                name: e.variables.name,
-                value: e.variables.value,
-            };
+            this.options.otherVote(e.variables);
             this.layout.switch('ingame', this.options);
         });
 
         document.addEventListener('toggle', (e) => {
-            this.options.show = !this.options.show;
+            this.options.toggleShow(!this.options.show);
             this.client.reveal(this.options.player, this.options.show);
             this.layout.switch('ingame', this.options);
         });
 
         document.addEventListener('reveal', (e) => {
-            this.options.show = e.variables.show;
+            this.options.toggleShow(e.variables.show);
             this.layout.switch('ingame', this.options);
         });
     }
