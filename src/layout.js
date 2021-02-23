@@ -14,15 +14,18 @@ export default class Layout {
     }
 
     init() {
+        const mainDiv = document.createElement('div');
+        mainDiv.className = 'main-content';
+
         const title = document.createElement('h1');
         title.textContent = 'Super Poker';
         title.className = 'margin-top-big';
 
-        const mainDiv = document.createElement('div');
-        mainDiv.className = 'main-content';
+        const subtitle = document.createElement('p');
+        subtitle.textContent = 'Minimalist planning poker';
 
         const containerDiv = document.createElement('div');
-        containerDiv.className = 'nes-container with-title';
+        containerDiv.className = 'nes-container with-title margin-top-big';
         this.containerDiv = containerDiv;
 
         const containerTitle = document.createElement('p');
@@ -38,6 +41,7 @@ export default class Layout {
         const footerDiv = this.createFooter();
 
         mainDiv.append(title);
+        mainDiv.append(subtitle);
         mainDiv.append(containerDiv);
         mainDiv.append(footerDiv);
 
