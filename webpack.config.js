@@ -4,13 +4,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 
 module.exports = (env) => {
-    let mode = 'development';
-    if (env.prod) {
-        mode = 'production';
-    }
-
-    return {
-        mode,
+    const config = {
+        mode: 'development',
         entry: './src/index.js',
         devtool: 'inline-source-map',
         plugins: [
@@ -38,5 +33,16 @@ module.exports = (env) => {
                 },
             ],
         },
+        performance: {
+            maxEntrypointSize: 2 ** 20,
+            maxAssetSize: 2 ** 20,
+        },
     }
+
+    if (env.production) {
+        config.mode = 'production';
+        config.devtool = false;
+    }
+
+    return config;
 }
