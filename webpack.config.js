@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { DefinePlugin } = require('webpack');
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = (env) => {
     const config = {
@@ -33,15 +34,27 @@ module.exports = (env) => {
                 },
             ],
         },
-        performance: {
-            maxEntrypointSize: 2 ** 20,
-            maxAssetSize: 2 ** 20,
-        },
-    }
+    };
 
     if (env.production) {
         config.mode = 'production';
         config.devtool = false;
+        config.performance = {
+            maxEntrypointSize: 2 ** 20,
+            maxAssetSize: 2 ** 20,
+        };
+        config.optimization = {
+            minimize: true,
+            minimizer: [
+                new TerserPlugin({
+                    terserOptions: {
+                        compress: {
+                            drop_console: true
+                        },
+                    },
+                }),
+            ],
+        };
     }
 
     return config;
