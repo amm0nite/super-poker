@@ -27,7 +27,7 @@ export default class Ingame {
         this.votesDiv = votesDiv;
 
         const voteProgress = document.createElement('progress');
-        voteProgress.className = 'nes-progress is-pattern margin-top-big';
+        voteProgress.className = 'nes-progress is-primary margin-top-big';
         voteProgress.value = 0;
         voteProgress.max = 0;
         this.voteProgress = voteProgress;
@@ -103,7 +103,7 @@ export default class Ingame {
         let hasVoted = 0;
         const votes = options.getVotes();
         for (let vote of votes) {
-            if (vote.value) {
+            if (vote.vote) {
                 hasVoted++;
             }
             const card = this.createVoterDiv(vote.name, vote.vote, vote.show);
