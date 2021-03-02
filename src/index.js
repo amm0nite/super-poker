@@ -66,7 +66,7 @@ class Game {
         });
 
         document.addEventListener('toggle', (e) => {
-            this.state.toggleShow(!this.state.show);
+            this.state.toggleShow(e.variables.show);
             this.client.reveal(this.state.player, this.state.show);
             this.layout.switch('ingame', this.state);
         });

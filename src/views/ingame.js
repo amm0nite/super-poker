@@ -94,6 +94,7 @@ export default class Ingame {
 
         this.actionButton.addEventListener('click', (e) => {
             const event = new Event('toggle');
+            event.variables = { show: e.target.classList.contains('reveal') };
             document.dispatchEvent(event);
         });
     }
@@ -112,23 +113,31 @@ export default class Ingame {
         this.votesDiv.textContent = '';
 
         let hasVoted = 0;
+        let someoneIsHiding = false;
+
         const votes = options.getVotes();
         for (let vote of votes) {
             if (vote.vote) {
                 hasVoted++;
+                if (!vote.show) {
+                    someoneIsHiding = true;
+                }
             }
             const card = this.createVoterDiv(vote.name, vote.vote, vote.show);
             this.votesDiv.append(card);
         }
+
         this.voteProgress.value = hasVoted;
         this.voteProgress.max = votes.length;
 
-        if (!options.show) {
+        if (someoneIsHiding) {
             this.actionButton.classList.add('is-success');
+            this.actionButton.classList.add('reveal');
             this.actionButton.textContent = 'Show cards';
         } else {
             this.actionButton.classList.remove('is-success');
-            this.actionButton.textContent = 'Hide cards';
+            this.actionButton.classList.remove('reveal');
+            this.actionButton.textContent = (hasVoted > 0) ? 'Hide cards' : 'Voting...';
         }
     }
 
