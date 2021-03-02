@@ -13,11 +13,20 @@ export default class Ingame {
         choicesDiv.className = 'flex';
 
         this.choiceButtons = [];
-        let choices = [1,2,3,5,8,13,21,'?'];
+        let choices = [1,2,3,5,8,13,21,34,'?'];
+        choices.push(null);
+
         for (let i=0; i<choices.length; i++) {
+            const value = choices[i];
             const choiceButton = document.createElement('button');
             choiceButton.className = 'nes-btn card';
-            choiceButton.textContent = choices[i];
+            choiceButton.textContent = value;
+
+            if (value === null) {
+                choiceButton.classList.add('is-error');
+                choiceButton.textContent = 'x';
+            }
+
             choicesDiv.append(choiceButton);
             this.choiceButtons.push(choiceButton);
         }
@@ -74,9 +83,11 @@ export default class Ingame {
         for (let choiceButton of this.choiceButtons) {
             choiceButton.addEventListener('click', (e) => {
                 const event = new Event('choice');
-                event.variables = {
-                    vote: choiceButton.textContent
+                let vote = choiceButton.textContent;
+                if (vote === 'x') {
+                    vote = null;
                 }
+                event.variables = { vote };
                 document.dispatchEvent(event);
             });
         }
@@ -93,7 +104,7 @@ export default class Ingame {
             if (choiceButton.classList.contains('is-success')) {
                 choiceButton.classList.remove('is-success');
             }
-            if (options.vote == value) {
+            if (options.vote !== null && options.vote === value) {
                 choiceButton.classList.add('is-success');
             }
         }
