@@ -13,6 +13,7 @@ module.exports = (env) => {
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 title: 'Super Poker',
+                favicon: 'favicon.ico',
             }),
             new DefinePlugin({
                 'SERVER_URL': JSON.stringify(process.env.SERVER_URL)
