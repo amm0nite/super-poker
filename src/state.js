@@ -55,4 +55,21 @@ export default class State {
             other.show = show;
         }
     }
+
+    saveSettings() {
+        window.localStorage.setItem('player', this.player);
+        window.localStorage.setItem('room', this.room);
+    }
+
+    loadSettings() {
+        const player = window.localStorage.getItem('player');
+        const room = window.localStorage.getItem('room');
+
+        if (!this.player) {
+            this.player = player;
+        }
+        if (!this.room) {
+            this.room = room;
+        }
+    }
 }

@@ -27,6 +27,7 @@ class Game {
         this.client.connect();
 
         document.addEventListener('connected', (e) => {
+            this.state.loadSettings();
             this.layout.switch('options', this.state);
         });
 
@@ -37,6 +38,7 @@ class Game {
         document.addEventListener('enter', (e) => {
             this.state.room = e.variables.room;
             this.state.player = e.variables.player;
+            this.state.saveSettings();
 
             this.client.selectChannel(e.variables.room);
 
