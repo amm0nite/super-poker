@@ -87,7 +87,7 @@ class Game {
         });
 
         document.addEventListener('ping', (e) => {
-            this.state.otherHello(e.variables);
+            this.state.otherPing(e.variables);
         });
     }
 

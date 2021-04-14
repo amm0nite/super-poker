@@ -18,8 +18,12 @@ export default class State {
         }
     }
 
+    getOther(id) {
+        return this.others.find((o) => o.id === id);
+    }
+
     otherHello(vars) {
-        let other = this.others.find((o) => o.id === vars.id);
+        let other = this.getOther(vars.id);
         if (!other) {
             other = {
                 id: vars.id,
@@ -31,6 +35,13 @@ export default class State {
         }
         other.last = new Date();
         return other;
+    }
+
+    otherPing(vars) {
+        let other = this.getOther(vars.id);
+        if (other) {
+            other.last = new Date();
+        }
     }
 
     othersCheck() {
