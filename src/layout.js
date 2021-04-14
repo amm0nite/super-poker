@@ -11,6 +11,8 @@ export default class Layout {
         this.views.push(new Spinner('joining'));
         this.views.push(new Options());
         this.views.push(new Ingame());
+
+        this.current = null;
     }
 
     init() {
@@ -56,10 +58,14 @@ export default class Layout {
 
     switch(name, options) {
         console.log('switching to', name);
+        this.current = name;
+        this.refresh(options);
+    }
 
+    refresh(options) {
         let selectedView = null;
         for (let view of this.views) {
-            if (view.name === name) {
+            if (view.name === this.current) {
                 selectedView = view;
                 view.show();
             } else {
@@ -68,7 +74,7 @@ export default class Layout {
         }
 
         if (!selectedView) {
-            throw new Error('unexpected view: ' + name);
+            throw new Error('unexpected view: ' + this.current);
         }
 
         selectedView.update(options);

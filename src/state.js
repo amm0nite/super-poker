@@ -29,7 +29,16 @@ export default class State {
             };
             this.others.push(other);
         }
+        other.last = new Date();
         return other;
+    }
+
+    othersCheck() {
+        this.others = this.others.filter((o) => {
+            const now = new Date();
+            const elapsed = now.getTime() - o.last.getTime();
+            return elapsed < (10 * 1000);
+        });
     }
 
     otherVote(vars) {

@@ -94,4 +94,9 @@ export default class WebSocketClient {
         const message = { type: 'reveal', player, show };
         this.send({ type: 'talk', message });
     }
+
+    ping(player) {
+        const message = { type: 'ping', player };
+        this.send({ type: 'talk', message });
+    }
 }

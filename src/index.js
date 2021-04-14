@@ -32,6 +32,7 @@ class Game {
         });
 
         document.addEventListener('disconnected', (e) => {
+            this.disableTick();
             this.layout.switch('connecting');
         });
 
@@ -46,8 +47,9 @@ class Game {
         });
 
         document.addEventListener('joined', (e) => {
-            this.layout.switch('ingame', this.state);
+            this.enableTick();
             this.client.hello(this.state.player);
+            this.layout.switch('ingame', this.state);
         });
 
         document.addEventListener('choice', (e) => {
@@ -77,6 +79,31 @@ class Game {
             this.state.toggleShow(e.variables.show);
             this.layout.switch('ingame', this.state);
         });
+
+        document.addEventListener('tick', (e) => {
+            this.state.othersCheck();
+            this.client.ping(this.state.player);
+            this.layout.refresh(this.state);
+        });
+
+        document.addEventListener('ping', (e) => {
+            this.state.otherHello(e.variables);
+        });
+    }
+
+    enableTick() {
+        const tick = () => {
+            const event = new Event('tick');
+            document.dispatchEvent(event);
+            this.tickTimeout = setTimeout(tick, 5000);
+        };
+        tick();
+    }
+
+    disableTick() {
+        if (this.tickTimeout) {
+            clearTimeout(this.tickTimeout);
+        }
     }
 }
 
