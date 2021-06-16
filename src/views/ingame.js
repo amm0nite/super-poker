@@ -35,12 +35,6 @@ export default class Ingame {
         votesDiv.className = 'flex margin-top-big';
         this.votesDiv = votesDiv;
 
-        const voteProgress = document.createElement('progress');
-        voteProgress.className = 'nes-progress is-primary margin-top-big';
-        voteProgress.value = 0;
-        voteProgress.max = 0;
-        this.voteProgress = voteProgress;
-
         const actionDiv = document.createElement('p');
         actionDiv.className = 'text-align-center margin-top-big';
         const actionButton = document.createElement('button');
@@ -48,10 +42,21 @@ export default class Ingame {
         this.actionButton = actionButton;
         actionDiv.append(actionButton);
 
+        const voteProgress = document.createElement('progress');
+        voteProgress.className = 'nes-progress is-primary margin-top-big margin-bottom-small';
+        voteProgress.value = 0;
+        voteProgress.max = 0;
+        this.voteProgress = voteProgress;
+
+        const urlDiv = document.createElement('div');
+        urlDiv.className = 'text-align-center nes-pointer';
+        this.urlDiv = urlDiv;
+
         ingameDiv.append(choicesDiv);
         ingameDiv.append(votesDiv);
         ingameDiv.append(actionDiv);
         ingameDiv.append(voteProgress);
+        ingameDiv.append(urlDiv);
 
         return ingameDiv;
     }
@@ -97,6 +102,10 @@ export default class Ingame {
             event.variables = { show: e.target.classList.contains('reveal') };
             document.dispatchEvent(event);
         });
+
+        this.urlDiv.addEventListener('click', () => {
+            window.getSelection().selectAllChildren(this.urlDiv);
+        });
     }
 
     update(options) {
@@ -138,6 +147,11 @@ export default class Ingame {
             this.actionButton.classList.remove('is-success');
             this.actionButton.classList.remove('reveal');
             this.actionButton.textContent = (hasVoted > 0) ? 'Hide cards' : 'Voting...';
+        }
+
+        if (this.urlDiv.textContent == '') {
+            const url = BASE_URL + '?room=' + encodeURIComponent(options.room);
+            this.urlDiv.textContent = url;
         }
     }
 

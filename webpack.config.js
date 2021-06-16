@@ -16,7 +16,8 @@ module.exports = (env) => {
                 favicon: 'favicon.ico',
             }),
             new DefinePlugin({
-                'SERVER_URL': JSON.stringify(process.env.SERVER_URL)
+                'SERVER_URL': JSON.stringify(process.env.SERVER_URL),
+                'BASE_URL': JSON.stringify(process.env.URL),
             }),
         ],
         output: {
