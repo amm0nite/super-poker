@@ -46,7 +46,7 @@ class Game {
             this.layout.switch('joining');
         });
 
-        document.addEventListener('joined', (e) => {
+        document.addEventListener('rx-joined', (e) => {
             this.enableTick();
             this.client.hello(this.state.player);
             this.layout.switch('ingame', this.state);
@@ -58,26 +58,40 @@ class Game {
             this.layout.switch('ingame', this.state);
         });
 
-        document.addEventListener('hello', (e) => {
+        document.addEventListener('rx-hello', (e) => {
             this.state.otherHello(e.variables);
             this.client.vote(this.state.player, this.state.vote);
             this.layout.switch('ingame', this.state);
         });
 
-        document.addEventListener('vote', (e) => {
+        document.addEventListener('rx-vote', (e) => {
             this.state.otherVote(e.variables);
             this.layout.switch('ingame', this.state);
         });
 
-        document.addEventListener('toggle', (e) => {
-            this.state.toggleShow(e.variables.show);
-            this.client.reveal(this.state.player, this.state.show);
+        document.addEventListener('action-reveal', (e) => {
+            this.state.everyoneShow();
+            this.client.reveal(this.state.player);
             this.layout.switch('ingame', this.state);
         });
 
-        document.addEventListener('reveal', (e) => {
-            this.state.toggleShow(e.variables.show);
+        document.addEventListener('action-reset', (e) => {
+            this.client.reset(this.state.player);
+
+            const event = new Event('choice');
+            event.variables = { vote: null };
+            document.dispatchEvent(event);
+        });
+
+        document.addEventListener('rx-reveal', (e) => {
+            this.state.everyoneShow();
             this.layout.switch('ingame', this.state);
+        });
+
+        document.addEventListener('rx-reset', (e) => {
+            const event = new Event('choice');
+            event.variables = { vote: null };
+            document.dispatchEvent(event);
         });
 
         document.addEventListener('tick', (e) => {
@@ -86,7 +100,7 @@ class Game {
             this.layout.refresh(this.state);
         });
 
-        document.addEventListener('ping', (e) => {
+        document.addEventListener('rx-ping', (e) => {
             this.state.otherPing(e.variables);
         });
     }

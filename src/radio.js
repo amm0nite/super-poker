@@ -66,7 +66,7 @@ export default class WebSocketClient {
             return;
         }
 
-        const event = new Event(name);
+        const event = new Event('rx-' + name);
         event.variables = vars;
         document.dispatchEvent(event);
     }
@@ -90,8 +90,13 @@ export default class WebSocketClient {
         this.send({ type: 'talk', message });
     }
 
-    reveal(player, show) {
-        const message = { type: 'reveal', player, show };
+    reveal(player) {
+        const message = { type: 'reveal', player };
+        this.send({ type: 'talk', message });
+    }
+
+    reset(player) {
+        const message = { type: 'reset', player };
         this.send({ type: 'talk', message });
     }
 

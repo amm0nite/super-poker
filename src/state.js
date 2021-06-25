@@ -69,10 +69,10 @@ export default class State {
         return votes;
     }
 
-    toggleShow(show) {
-        this.show = show;
+    everyoneShow() {
+        this.show = true;
         for (let other of this.others) {
-            other.show = show;
+            other.show = true;
         }
     }
 
