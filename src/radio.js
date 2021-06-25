@@ -56,6 +56,7 @@ export default class WebSocketClient {
             };
             if (message.type === 'vote') {
                 vars.vote = message.vote;
+                vars.show = message.show;
             }
             if (message.type === 'reveal') {
                 vars.show = message.show;
@@ -80,8 +81,8 @@ export default class WebSocketClient {
         this.send({ type: 'channel', channel });
     }
 
-    vote(player, vote) {
-        const message = { type: 'vote', player, vote };
+    vote(player, vote, show) {
+        const message = { type: 'vote', player, vote, show };
         this.send({ type: 'talk', message });
     }
 

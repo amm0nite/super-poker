@@ -55,9 +55,7 @@ export default class State {
     otherVote(vars) {
         const other = this.otherHello(vars);
         other.vote = vars.vote;
-        if (other.show) {
-            other.show = false;
-        }
+        other.show = vars.show;
     }
 
     getVotes() {
@@ -69,11 +67,8 @@ export default class State {
         return votes;
     }
 
-    everyoneShow() {
+    playerShow() {
         this.show = true;
-        for (let other of this.others) {
-            other.show = true;
-        }
     }
 
     saveSettings() {

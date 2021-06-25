@@ -54,13 +54,13 @@ class Game {
 
         document.addEventListener('choice', (e) => {
             this.state.playerVote(e.variables.vote);
-            this.client.vote(this.state.player, this.state.vote);
+            this.client.vote(this.state.player, this.state.vote, false);
             this.layout.switch('ingame', this.state);
         });
 
         document.addEventListener('rx-hello', (e) => {
             this.state.otherHello(e.variables);
-            this.client.vote(this.state.player, this.state.vote);
+            this.client.vote(this.state.player, this.state.vote, this.state.show);
             this.layout.switch('ingame', this.state);
         });
 
@@ -70,8 +70,10 @@ class Game {
         });
 
         document.addEventListener('action-reveal', (e) => {
-            this.state.everyoneShow();
             this.client.reveal(this.state.player);
+
+            this.state.playerShow();
+            this.client.vote(this.state.player, this.state.vote, true);
             this.layout.switch('ingame', this.state);
         });
 
@@ -84,7 +86,8 @@ class Game {
         });
 
         document.addEventListener('rx-reveal', (e) => {
-            this.state.everyoneShow();
+            this.state.playerShow();
+            this.client.vote(this.state.player, this.state.vote, true);
             this.layout.switch('ingame', this.state);
         });
 
