@@ -41,7 +41,7 @@ class Game {
             this.state.player = e.variables.player;
             this.state.saveSettings();
 
-            this.client.selectChannel(e.variables.room);
+            this.client.selectRoom(e.variables.room);
 
             this.layout.switch('joining');
         });

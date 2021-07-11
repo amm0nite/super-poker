@@ -43,9 +43,9 @@ export default class WebSocketClient {
 
         console.log('rx', data);
 
-        if (data.type === 'channel') {
+        if (data.type === 'room') {
             name = 'joined';
-            vars = { room: data.channel };
+            vars = { room: data.room };
         }
         if (data.type === 'talk') {
             const message = data.message;
@@ -77,8 +77,8 @@ export default class WebSocketClient {
         console.log('tx', data);
     }
 
-    selectChannel(channel) {
-        this.send({ type: 'channel', channel });
+    selectRoom(room) {
+        this.send({ type: 'room', room });
     }
 
     vote(player, vote, show) {
