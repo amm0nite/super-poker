@@ -7,6 +7,8 @@ export default class State {
         this.player = null;
         this.vote = null;
         this.show = false;
+        this.exists = false;
+        this.meta = {};
 
         this.others = [];
     }

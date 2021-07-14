@@ -43,9 +43,13 @@ export default class WebSocketClient {
 
         console.log('rx', data);
 
+        if (data.type === 'check') {
+            name = 'check';
+            vars = { room: data.room, exists: data.exists, meta: data.meta };
+        }
         if (data.type === 'room') {
             name = 'joined';
-            vars = { room: data.room };
+            vars = { room: data.room, meta: data.meta };;
         }
         if (data.type === 'talk') {
             const message = data.message;
@@ -75,6 +79,10 @@ export default class WebSocketClient {
     send(data) {
         this.socket.send(JSON.stringify(data));
         console.log('tx', data);
+    }
+
+    checkRoom(room) {
+        this.send({ type: 'check', room });
     }
 
     selectRoom(room) {

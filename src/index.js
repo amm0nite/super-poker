@@ -36,7 +36,17 @@ class Game {
             this.layout.switch('connecting');
         });
 
-        document.addEventListener('enter', (e) => {
+        document.addEventListener('options-input', (e) => {
+            this.client.checkRoom(e.variables.room);
+        });
+
+        document.addEventListener('rx-check', (e) => {
+            this.state.exists = e.variables.exists;
+            this.state.meta = e.variables.meta;
+            this.layout.refresh(this.state);
+        });
+
+        document.addEventListener('options-enter', (e) => {
             this.state.room = e.variables.room;
             this.state.player = e.variables.player;
             this.state.saveSettings();
@@ -47,7 +57,9 @@ class Game {
         });
 
         document.addEventListener('rx-joined', (e) => {
+            this.state.meta = e.variables.meta;
             this.enableTick();
+
             this.client.hello(this.state.player);
             this.layout.switch('ingame', this.state);
         });

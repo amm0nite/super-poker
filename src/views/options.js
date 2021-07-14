@@ -47,9 +47,13 @@ export default class Options {
     }
 
     activate() {
+        this.roomNameInput.addEventListener('input', (e) => {
+            this.dispatchInputEvent(e.target.value);
+        });
+
         this.optionsForm.addEventListener('submit', (e) => {
             if (this.roomNameInput.value != '' && this.playerNameInput.value != '') {
-                const event = new Event('enter');
+                const event = new Event('options-enter');
                 event.variables = {
                     room: this.roomNameInput.value,
                     player: this.playerNameInput.value,
@@ -60,16 +64,28 @@ export default class Options {
         });
     }
 
-    update(options) {
-        this.roomNameInput.value = options.room;
-        this.playerNameInput.value = options.player;
-        if (options.room) {
-            this.optionsSubmit.textContent = 'Continue';
-        }
-        this.playerNameInput.focus();
+    dispatchInputEvent(room) {
+        const event = new Event('options-input');
+        event.variables = { room };
+        document.dispatchEvent(event);
     }
 
-    getTitle(options) {
+    update(state) {
+        if (this.roomNameInput.value === '') {
+            this.roomNameInput.value = state.room;
+        }
+        if (this.playerNameInput.value === '') {
+            this.playerNameInput.value = state.player;
+        }
+
+        if (state.exists) {
+            this.optionsSubmit.textContent = 'Join';
+        } else {
+            this.optionsSubmit.textContent = 'Create';
+        }
+    }
+
+    getTitle(state) {
         return this.name.charAt(0).toUpperCase() + this.name.slice(1);
     }
 
@@ -82,6 +98,8 @@ export default class Options {
     show() {
         if (this.optionsForm.classList.contains('hidden')) {
             this.optionsForm.classList.remove('hidden');
+            this.dispatchInputEvent(this.roomNameInput.value);
+            this.playerNameInput.focus();
         }
     }
 }

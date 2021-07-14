@@ -62,25 +62,18 @@ export default class Layout {
         this.refresh(options);
     }
 
-    refresh(options) {
-        let selectedView = null;
+    refresh(state) {
         for (let view of this.views) {
             if (view.name === this.current) {
-                selectedView = view;
+                view.update(state);
                 view.show();
+
+                let title = view.getTitle(state);
+                this.containerTitle.textContent = title;
             } else {
                 view.hide();
             }
         }
-
-        if (!selectedView) {
-            throw new Error('unexpected view: ' + this.current);
-        }
-
-        selectedView.update(options);
-        let title = selectedView.getTitle(options);
-
-        this.containerTitle.textContent = title;
     }
 
     createFooter() {
