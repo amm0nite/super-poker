@@ -2,38 +2,56 @@
 import "nes.css/css/nes.min.css";
 import './style.css';
 
-import WebSocketClient from './radio.js';
-import Layout from './layout.js';
 import State from "./state.js";
+import WebSocketClient from './radio.js';
+
+import SuperPoker from "./components/super";
+import Spinner from "./components/spinner";
+import Options from "./components/options";
+import InGame from "./components/ingame";
 
 class Game {
     constructor() {
         this.state = new State();
-        this.layout = new Layout();
         this.client = new WebSocketClient();
+
+        customElements.define('super-poker', SuperPoker);
+        customElements.define('spin-ner', Spinner);
+        customElements.define('opt-ions', Options);
+        customElements.define('in-game', InGame);
     }
 
-    trigger(name, vars) {
-        const event = new Event(name);
-        event.variables = vars;
-        document.dispatchEvent(event);
+    getMainComponent() {
+        return document.querySelector('super-poker');
+    }
+
+    switch(mode) {
+        const event = new CustomEvent('switch', { detail: mode });
+        this.getMainComponent().dispatchEvent(event);
+        this.refresh();
+    }
+
+    refresh() {
+        const event = new CustomEvent('refresh', { detail: this.state });
+        this.getMainComponent().dispatchEvent(event);
     }
 
     main() {
-        document.body.append(this.layout.init());
-        this.layout.activate();
+        const template = document.createElement('template');
+        template.innerHTML = `<super-poker></super-poker>`;
+        document.body.append(template.content);
 
-        this.layout.switch('connecting');
+        this.switch('connecting');
         this.client.connect();
 
         document.addEventListener('connected', (e) => {
             this.state.loadSettings();
-            this.layout.switch('options', this.state);
+            this.switch('options');
         });
 
         document.addEventListener('disconnected', (e) => {
             this.disableTick();
-            this.layout.switch('connecting');
+            this.switch('connecting');
         });
 
         document.addEventListener('options-input', (e) => {
@@ -43,7 +61,7 @@ class Game {
         document.addEventListener('rx-check', (e) => {
             this.state.exists = e.variables.exists;
             this.state.meta = e.variables.meta;
-            this.layout.refresh(this.state);
+            this.refresh();
         });
 
         document.addEventListener('options-enter', (e) => {
@@ -53,7 +71,7 @@ class Game {
 
             this.client.selectRoom(e.variables.room);
 
-            this.layout.switch('joining');
+            this.switch('joining');
         });
 
         document.addEventListener('rx-joined', (e) => {
@@ -61,24 +79,24 @@ class Game {
             this.enableTick();
 
             this.client.hello(this.state.player);
-            this.layout.switch('ingame', this.state);
+            this.switch('ingame');
         });
 
         document.addEventListener('choice', (e) => {
             this.state.playerVote(e.variables.vote);
             this.client.vote(this.state.player, this.state.vote, false);
-            this.layout.switch('ingame', this.state);
+            this.switch('ingame');
         });
 
         document.addEventListener('rx-hello', (e) => {
             this.state.otherHello(e.variables);
             this.client.vote(this.state.player, this.state.vote, this.state.show);
-            this.layout.switch('ingame', this.state);
+            this.switch('ingame');
         });
 
         document.addEventListener('rx-vote', (e) => {
             this.state.otherVote(e.variables);
-            this.layout.switch('ingame', this.state);
+            this.switch('ingame');
         });
 
         document.addEventListener('action-reveal', (e) => {
@@ -86,7 +104,7 @@ class Game {
 
             this.state.playerShow();
             this.client.vote(this.state.player, this.state.vote, true);
-            this.layout.switch('ingame', this.state);
+            this.switch('ingame');
         });
 
         document.addEventListener('action-reset', (e) => {
@@ -100,7 +118,7 @@ class Game {
         document.addEventListener('rx-reveal', (e) => {
             this.state.playerShow();
             this.client.vote(this.state.player, this.state.vote, true);
-            this.layout.switch('ingame', this.state);
+            this.switch('ingame');
         });
 
         document.addEventListener('rx-reset', (e) => {
@@ -112,7 +130,7 @@ class Game {
         document.addEventListener('tick', (e) => {
             this.state.othersCheck();
             this.client.ping(this.state.player);
-            this.layout.refresh(this.state);
+            this.refresh();
         });
 
         document.addEventListener('rx-ping', (e) => {
