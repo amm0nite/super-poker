@@ -38,7 +38,7 @@ export default class SuperPoker extends BaseComponent {
                 let title = component.getTitle();
                 title = title.replace('$player', state.player);
                 title = title.replace('$room', state.room);
-                this.updateTitle(component.getTitle());
+                this.updateTitle(title);
             } else {
                 component.hide();
             }

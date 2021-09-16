@@ -6,7 +6,7 @@ export default class Connecting extends BaseComponent {
 
         this.setHtml(`
             <div>
-                <p>Connecting...</p>
+                <p>Loading...</p>
             </div>
         `);
     }
