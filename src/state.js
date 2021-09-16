@@ -3,6 +3,9 @@ export default class State {
     constructor() {
         const urlParams = new URLSearchParams(window.location.search);
 
+        this.title = 'Hello';
+        this.view = null;
+
         this.room = urlParams.get('room');
         this.player = null;
         this.vote = null;

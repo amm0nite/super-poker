@@ -6,7 +6,7 @@ import State from "./state.js";
 import WebSocketClient from './radio.js';
 
 import SuperPoker from "./components/super";
-import Spinner from "./components/spinner";
+import Connecting from "./components/connecting";
 import Options from "./components/options";
 import InGame from "./components/ingame";
 
@@ -16,7 +16,7 @@ class Game {
         this.client = new WebSocketClient();
 
         customElements.define('super-poker', SuperPoker);
-        customElements.define('spin-ner', Spinner);
+        customElements.define('connect-ing', Connecting);
         customElements.define('opt-ions', Options);
         customElements.define('in-game', InGame);
     }
@@ -25,15 +25,14 @@ class Game {
         return document.querySelector('super-poker');
     }
 
-    switch(mode) {
-        const event = new CustomEvent('switch', { detail: mode });
-        this.getMainComponent().dispatchEvent(event);
+    switch(name) {
+        console.log('switching to', name);
+        this.state.view = name;
         this.refresh();
     }
 
     refresh() {
-        const event = new CustomEvent('refresh', { detail: this.state });
-        this.getMainComponent().dispatchEvent(event);
+        this.getMainComponent().refresh(this.state);
     }
 
     main() {
