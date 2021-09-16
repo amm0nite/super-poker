@@ -9,6 +9,11 @@ import SuperPoker from "./components/super";
 import Connecting from "./components/connecting";
 import Options from "./components/options";
 import InGame from "./components/ingame";
+import RoomLink from "./components/roomlink";
+import ChoiceCards from "./components/choicecards";
+import VoteCards from "./components/votecards";
+import ActionButton from "./components/actionbutton";
+import ProgressBar from "./components/progressbar";
 
 class Game {
     constructor() {
@@ -19,6 +24,11 @@ class Game {
         customElements.define('connect-ing', Connecting);
         customElements.define('opt-ions', Options);
         customElements.define('in-game', InGame);
+        customElements.define('choice-cards', ChoiceCards);
+        customElements.define('vote-cards', VoteCards);
+        customElements.define('action-button', ActionButton);
+        customElements.define('progress-bar', ProgressBar);
+        customElements.define('room-link', RoomLink);
     }
 
     getMainComponent() {

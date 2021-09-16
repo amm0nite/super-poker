@@ -72,6 +72,25 @@ export default class State {
         return votes;
     }
 
+    howManyVoted() {
+        let count = 0;
+        for (let vote of this.getVotes()) {
+            if (vote.vote) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    someoneIsHiding() {
+        for (let vote of this.getVotes()) {
+            if (vote.vote && !vote.show) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     playerShow() {
         this.show = true;
     }

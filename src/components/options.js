@@ -67,4 +67,12 @@ export default class Options extends BaseComponent {
     getTitle() {
         return 'Options';
     }
+
+    show() {
+        if (this.classList.contains('hidden')) {
+            this.classList.remove('hidden');
+            this.dispatchInputEvent(this.roomNameInput.value);
+            this.playerNameInput.focus();
+        }
+    }
 }
