@@ -11,7 +11,7 @@ export default class SuperPoker extends BaseComponent {
                 <p>Minimalist planning poker</p>
                 <div class="nes-container with-title margin-top-big">
                     <p class="title">Hello</p>
-                    <spin-ner></spin-ner>
+                    <connect-ing></connect-ing>
                     <opt-ions></opt-ions>
                     <in-game></in-game>
                 </div>
@@ -23,11 +23,29 @@ export default class SuperPoker extends BaseComponent {
     }
 
     setup() {
-        this.addEventListener('switch', (event) => {
-            console.log('received switch:', event.detail);
-        });
-        this.addEventListener('refresh', (event) => {
-            console.log('received refresh:', event.detail);
-        });
+        this.components = {
+            connecting: this.querySelector('connect-ing'),
+            options: this.querySelector('opt-ions'),
+            ingame: this.querySelector('in-game'),
+        };
+    }
+
+    refresh(state) {
+        for (const [name, component] of Object.entries(this.components)) {
+            component.refresh(state);
+            if (name === state.view) {
+                component.show();
+                let title = component.getTitle();
+                title = title.replace('$player', state.player);
+                title = title.replace('$room', state.room);
+                this.updateTitle(component.getTitle());
+            } else {
+                component.hide();
+            }
+        }
+    }
+
+    updateTitle(title) {
+        this.querySelector('.title').innerText = title;
     }
 }

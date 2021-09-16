@@ -14,4 +14,12 @@ export default class BaseComponent extends HTMLElement {
     setup() {
 
     }
+
+    hide() {
+        this.classList.add('hidden');
+    }
+
+    show() {
+        this.classList.remove('hidden');
+    }
 }

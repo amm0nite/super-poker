@@ -1,11 +1,13 @@
 import BaseComponent from '../component.js';
 
-export default class InGame extends BaseComponent {
+export default class Connecting extends BaseComponent {
     constructor() {
         super();
 
         this.setHtml(`
-            <p>InGame</p>
+            <div>
+                <p>Connecting...</p>
+            </div>
         `);
     }
 
@@ -18,6 +20,6 @@ export default class InGame extends BaseComponent {
     }
 
     getTitle() {
-        return '$player@$room';
+        return 'Connecting';
     }
 }
