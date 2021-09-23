@@ -5,14 +5,24 @@ export default class Options extends BaseComponent {
         super();
 
         this.setHtml(`
-            <form class="nes-field">
+            <form class="nes-field margin-bottom-small">
                 <div class="nes-field">
                     <label for="your-name">Your name</label>
-                    <input type="text" id="your-name" class="nes-input margin-bottom-small"></input>
+                    <input type="text" id="your-name" class="nes-input"></input>
                 </div>
-                <div class="nes-field">
+                <div class="nes-field margin-bottom-small">
                     <label for="room-name">Room name</label>
-                    <input type="text" id="room-name" class="nes-input margin-bottom-small"></input>
+                    <input type="text" id="room-name" class="nes-input"></input>
+                </div>
+                <div class="nes-field margin-bottom-small">
+                    <label for="card-deck">Card deck</label>
+                    <div class="nes-select">
+                        <select id="card-deck">
+                            <option value="1,2,3,5,8,13,21,34" selected>Fibonacci (up to 34)</option>
+                            <option value="1,2,3,5,8,13,21,34,55,89,144">Fibonacci (up to 144)</option>
+                            <option value="XXS,XS,S,M,L,XL,XXL">Clothing size</option>
+                        </select>
+                    </div>
                 </div>
                 <button type="submit" class="nes-btn is-primary">Create</button>
             </form>
@@ -23,8 +33,8 @@ export default class Options extends BaseComponent {
         this.optionsForm = this.querySelector('form');
         this.playerNameInput = this.querySelector('#your-name');
         this.roomNameInput = this.querySelector('#room-name');
+        this.cardDeckSelect = this.querySelector('#card-deck');
         this.optionsSubmit = this.querySelector('button');
-
 
         this.roomNameInput.addEventListener('input', (e) => {
             this.dispatchInputEvent(e.target.value);
@@ -33,10 +43,12 @@ export default class Options extends BaseComponent {
         this.optionsForm.addEventListener('submit', (e) => {
             const room = this.roomNameInput.value;
             const player = this.playerNameInput.value;
+            const deck = this.cardDeckSelect.value;
 
             if (room != '' && player != '') {
                 const event = new Event('options-enter');
-                event.variables = { room, player };
+                event.variables = { room, player, deck };
+                console.log(event.variables);
                 document.dispatchEvent(event);
             }
             e.preventDefault();
@@ -59,8 +71,11 @@ export default class Options extends BaseComponent {
 
         if (state.exists) {
             this.optionsSubmit.textContent = 'Join';
+            this.cardDeckSelect.disabled = true;
+            this.cardDeckSelect.value = state.deck;
         } else {
             this.optionsSubmit.textContent = 'Create';
+            this.cardDeckSelect.disabled = false;
         }
     }
 
