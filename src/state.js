@@ -11,7 +11,7 @@ export default class State {
         this.vote = null;
         this.show = false;
         this.exists = false;
-        this.meta = {};
+        this.deck = '';
 
         this.others = [];
     }

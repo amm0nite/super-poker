@@ -69,22 +69,24 @@ class Game {
 
         document.addEventListener('rx-check', (e) => {
             this.state.exists = e.variables.exists;
-            this.state.meta = e.variables.meta;
+            this.state.deck = e.variables.meta?.deck;
             this.refresh();
         });
 
         document.addEventListener('options-enter', (e) => {
             this.state.room = e.variables.room;
             this.state.player = e.variables.player;
+            this.state.deck = e.variables.deck;
             this.state.saveSettings();
 
-            this.client.selectRoom(e.variables.room);
+            const meta = { deck: e.variables.deck };
+            this.client.selectRoom(e.variables.room, meta);
 
             this.switch('joining');
         });
 
         document.addEventListener('rx-joined', (e) => {
-            this.state.meta = e.variables.meta;
+            this.state.deck = e.variables.meta?.deck;
             this.enableTick();
 
             this.client.hello(this.state.player);

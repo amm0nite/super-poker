@@ -85,8 +85,8 @@ export default class WebSocketClient {
         this.send({ type: 'check', room });
     }
 
-    selectRoom(room) {
-        this.send({ type: 'room', room });
+    selectRoom(room, meta) {
+        this.send({ type: 'room', room, meta });
     }
 
     vote(player, vote, show) {
