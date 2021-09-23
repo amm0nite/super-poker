@@ -18,8 +18,8 @@ export default class Options extends BaseComponent {
                     <label for="card-deck">Card deck</label>
                     <div class="nes-select">
                         <select id="card-deck">
-                            <option value="1,2,3,5,8,13,21,34" selected>Fibonacci (up to 34)</option>
-                            <option value="1,2,3,5,8,13,21,34,55,89,144">Fibonacci (up to 144)</option>
+                            <option value="1,2,3,5,8,13,21,34" selected>Fibonacci small</option>
+                            <option value="1,2,3,5,8,13,21,34,55,89,144">Fibonacci long</option>
                             <option value="XXS,XS,S,M,L,XL,XXL">Clothing size</option>
                         </select>
                     </div>
@@ -35,6 +35,11 @@ export default class Options extends BaseComponent {
         this.roomNameInput = this.querySelector('#room-name');
         this.cardDeckSelect = this.querySelector('#card-deck');
         this.optionsSubmit = this.querySelector('button');
+
+        const cardDeckOptions = this.cardDeckSelect.querySelectorAll('option');
+        for (const cardDeckOption of cardDeckOptions) {
+            cardDeckOption.innerText = cardDeckOption.innerText + ` (${cardDeckOption.value})`;
+        }
 
         this.roomNameInput.addEventListener('input', (e) => {
             this.dispatchInputEvent(e.target.value);
