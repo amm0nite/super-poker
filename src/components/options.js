@@ -22,6 +22,7 @@ export default class Options extends BaseComponent {
                             <option value="1,2,3,5,8,13,21,34,55,89,144">Fibonacci long</option>
                             <option value="1,2,3,4,5">One to five</option>
                             <option value="XXS,XS,S,M,L,XL,XXL">Clothing size</option>
+                            <option value="0.5,1,2,3,5,10">Days</option>
                         </select>
                     </div>
                 </div>
