@@ -20,6 +20,7 @@ export default class Options extends BaseComponent {
                         <select id="card-deck">
                             <option value="1,2,3,5,8,13,21,34" selected>Fibonacci small</option>
                             <option value="1,2,3,5,8,13,21,34,55,89,144">Fibonacci long</option>
+                            <option value="1,2,3,4,5">One to five</option>
                             <option value="XXS,XS,S,M,L,XL,XXL">Clothing size</option>
                         </select>
                     </div>
@@ -53,7 +54,6 @@ export default class Options extends BaseComponent {
             if (room != '' && player != '') {
                 const event = new Event('options-enter');
                 event.variables = { room, player, deck };
-                console.log(event.variables);
                 document.dispatchEvent(event);
             }
             e.preventDefault();
