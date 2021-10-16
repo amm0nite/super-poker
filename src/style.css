@@ -23,6 +23,10 @@ html, body, pre, code, kbd, samp {
     margin-bottom: 10px;
 }
 
+.margin-auto {
+    margin: 0 auto;
+}
+
 .hidden {
     display: none;
 }
@@ -36,8 +40,13 @@ html, body, pre, code, kbd, samp {
 .card {
     display: block;
     width: 60px;
-    height: 60px;
-    margin: 0 auto;
+    height: 65px;
+    margin: 5px 6px;
+    padding: 2px;
+}
+
+vote-cards .card {
+    margin: auto;
 }
 
 .player-name {
