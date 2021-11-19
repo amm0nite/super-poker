@@ -64,6 +64,7 @@ class Game {
         });
 
         document.addEventListener('options-input', (e) => {
+            this.state.room = e.variables.room;
             this.client.checkRoom(e.variables.room);
         });
 
