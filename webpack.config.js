@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const TerserPlugin = require("terser-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = (env) => {
     const config = {
@@ -17,7 +18,12 @@ module.exports = (env) => {
             }),
             new DefinePlugin({
                 'SERVER_URL': JSON.stringify(process.env.SERVER_URL),
-                'BASE_URL': JSON.stringify(process.env.URL),
+                'BASE_URL': JSON.stringify(process.env.BASE_URL),
+            }),
+            new CopyPlugin({
+                patterns: [
+                    'config.json',
+                ],
             }),
         ],
         output: {

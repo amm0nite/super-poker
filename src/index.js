@@ -46,6 +46,7 @@ class Game {
     }
 
     main() {
+
         const template = document.createElement('template');
         template.innerHTML = `<super-poker></super-poker>`;
         document.body.append(template.content);
@@ -166,5 +167,20 @@ class Game {
     }
 }
 
+async function loadConfig() {
+    const res = await fetch('config.json');
+    if (!res.ok) {
+        return;
+    }
+    const config = await res.json();    
+    if (config.BASE_URL) {
+        BASE_URL = config.BASE_URL;
+    }
+    if (config.SERVER_URL) {
+        SERVER_URL = config.SERVER_URL;
+    }
+}
+
+await loadConfig();
 const game = new Game();
 game.main();

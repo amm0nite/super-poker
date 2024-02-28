@@ -10,7 +10,7 @@ Files are produced with `webpack`.
 
 Required environment variables:
 - SERVER_URL: WebSocket server URL (`wss://example.com`)
-- URL: base URL to use for the room link (`https://example.com`)
+- BASE_URL: base URL to use for the room link (`https://example.com`)
 
 Build command:
 ```bash
