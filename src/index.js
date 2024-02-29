@@ -46,7 +46,6 @@ class Game {
     }
 
     main() {
-
         const template = document.createElement('template');
         template.innerHTML = `<super-poker></super-poker>`;
         document.body.append(template.content);
