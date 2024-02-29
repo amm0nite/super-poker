@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { DefinePlugin } = require('webpack');
 const TerserPlugin = require("terser-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
@@ -15,14 +14,15 @@ module.exports = (env) => {
             new HtmlWebpackPlugin({
                 title: 'Super Poker',
                 favicon: 'favicon.ico',
-            }),
-            new DefinePlugin({
-                'SERVER_URL': JSON.stringify(process.env.SERVER_URL),
-                'BASE_URL': JSON.stringify(process.env.BASE_URL),
+                template: 'src/index.html',
+                templateParameters: {
+                    'SERVER_URL': JSON.stringify(process.env.SERVER_URL),
+                    'BASE_URL': JSON.stringify(process.env.BASE_URL),
+                },
             }),
             new CopyPlugin({
                 patterns: [
-                    'config.json',
+                    'src/config.js',
                 ],
             }),
         ],
