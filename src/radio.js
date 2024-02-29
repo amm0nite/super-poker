@@ -5,7 +5,8 @@ export default class WebSocketClient {
     }
 
     async connect() {
-        const serverURL = SERVER_URL;
+        console.log(superPokerConfig);
+        const serverURL = superPokerConfig.SERVER_URL;
         if (!serverURL) {
             throw new Error('Server URL is not defined');
         }

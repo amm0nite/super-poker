@@ -11,7 +11,7 @@ export default class RoomLink extends BaseComponent {
 
     setRoom(room) {
         this.room = room;
-        const url = BASE_URL + '?room=' + encodeURIComponent(room);
+        const url = superPokerConfig.BASE_URL + '?room=' + encodeURIComponent(room);
         this.querySelector('div').innerText = url;
     }
 
