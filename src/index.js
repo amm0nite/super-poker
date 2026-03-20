@@ -69,9 +69,11 @@ class Game {
         });
 
         document.addEventListener('rx-check', (e) => {
-            this.state.exists = e.variables.exists;
-            this.state.deck = e.variables.meta?.deck;
-            this.refresh();
+            if (e.variables.room === this.state.room) {
+                this.state.exists = e.variables.exists;
+                this.state.deck = e.variables.meta?.deck;
+                this.refresh();
+            }
         });
 
         document.addEventListener('options-enter', (e) => {
