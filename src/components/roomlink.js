@@ -16,8 +16,9 @@ export default class RoomLink extends BaseComponent {
     }
 
     setup() {
-        this.querySelector('div').addEventListener('click', () => {
-            window.getSelection().selectAllChildren(this.roomLink);
+        const roomLinkDiv = this.querySelector('div');
+        roomLinkDiv.addEventListener('click', () => {
+            window.getSelection().selectAllChildren(roomLinkDiv);
         });
     }
 
