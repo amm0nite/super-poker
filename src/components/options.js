@@ -77,10 +77,12 @@ export default class Options extends BaseComponent {
 
         if (state.exists) {
             this.optionsSubmit.textContent = 'Join';
+            this.optionsSubmit.classList.replace('is-primary', 'is-success');
             this.cardDeckSelect.disabled = true;
             this.cardDeckSelect.value = state.deck;
         } else {
             this.optionsSubmit.textContent = 'Create';
+            this.optionsSubmit.classList.replace('is-success', 'is-primary');
             this.cardDeckSelect.disabled = false;
         }
     }
